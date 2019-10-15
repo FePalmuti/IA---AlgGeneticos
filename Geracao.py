@@ -31,7 +31,7 @@ class Geracao:
         self.elite = []
         self.elite.append(self.melhor_individuo(grupo1))
         self.elite.append(self.melhor_individuo(grupo2))
-        print(self.elite[0], self.elite[0])
+#        print(self.elite[0], self.elite[1])
 
     def crossover(self, pai_1, pai_2, pos_corte):
         if random() < self.TAXA_CROSSOVER:
@@ -39,6 +39,7 @@ class Geracao:
             pt2_pai1 = pai_1.genes[pos_corte:]
             pt1_pai2 = pai_2.genes[:pos_corte]
             pt2_pai2 = pai_2.genes[pos_corte:]
+#            print(pt1_pai1, pt2_pai1, pt1_pai2, pt2_pai2)
             filho_1 = Individuo()
             filho_1.genes = pt1_pai1 + pt2_pai2
             self.corrigir_filho(filho_1)
@@ -46,8 +47,8 @@ class Geracao:
             filho_2.genes = pt1_pai2 + pt2_pai1
             self.corrigir_filho(filho_2)
         else:
-            filho_1 = pai_1
-            filho_2 = pai_2
+            filho_1 = pai_1.clonar()
+            filho_2 = pai_2.clonar()
         return filho_1, filho_2
 
     def corrigir_filho(self, filho):
