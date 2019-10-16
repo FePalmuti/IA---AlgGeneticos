@@ -1,4 +1,6 @@
+import math
 from random import randint
+from random import random
 
 class Individuo:
     V_MIN = -10
@@ -6,7 +8,7 @@ class Individuo:
     NUM_BITS = 5
 
     def __init__(self):
-        valor = self.valor_aleatorio(self.V_MIN, self.V_MAX)
+        valor = randint(self.V_MIN, self.V_MAX)
         self.valor = valor
         self.genes = []
         if valor > 0:
@@ -19,9 +21,6 @@ class Individuo:
             # Injeta um 0 na posicao 1
             self.genes.insert(1, 0)
 
-    def valor_aleatorio(self, min, max):
-        return randint(min, max)
-
     def converter_decimal_binario(self, decimal):
         binario = []
         while decimal != 0 and decimal != 1:
@@ -31,11 +30,10 @@ class Individuo:
         binario.insert(0, decimal)
         return binario
 
-    def clonar(self):
-        novo_individuo = Individuo()
-        novo_individuo.valor = self.valor
-        novo_individuo.genes = self.genes.copy()
-        return novo_individuo
+    def auto_correcao(self):
+        self.atualizar_valor()
+        if self.valor < self.V_MIN or self.valor > self.V_MAX:
+            self.valor = -math.inf
 
     def atualizar_valor(self):
         copia_genes = self.genes.copy()
@@ -52,5 +50,23 @@ class Individuo:
         valor *= sinal
         self.valor = valor
 
+    def sofrer_mutacao(self, taxa):
+        for indice in range(len(self.genes)):
+            if random() < taxa:
+                self.genes[indice] = self.swap(self.genes[indice])
+
+    def swap(self, gene):
+        if gene == 0:
+            return 1
+        else:
+            return 0
+
+    def clonar(self):
+        novo_individuo = Individuo()
+        novo_individuo.valor = self.valor
+        novo_individuo.genes = self.genes.copy()
+        return novo_individuo
+
     def __str__(self):
         return str(self.valor)+" "+str(self.genes)
+#

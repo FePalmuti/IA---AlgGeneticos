@@ -1,7 +1,8 @@
 from Individuo import Individuo
 from Geracao import Geracao
 
-g1 = Geracao()
-g2 = Geracao(g1)
-print()
-print(g2)
+geracao_atual = Geracao()
+print(geracao_atual)
+for i in range(19):
+    geracao_atual = Geracao(geracao_atual)
+    print(geracao_atual)
