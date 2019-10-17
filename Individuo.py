@@ -18,7 +18,7 @@ class Individuo:
             self.valor = -math.inf
 
     def atualizar_valor(self):
-        self.valor = Conversor.binario_para_decimal(self.genes.copy())
+        self.valor = Conversor.binario_para_decimal(self.genes)
 
     def sofrer_mutacao(self, taxa):
         for indice in range(len(self.genes)):
@@ -39,3 +39,4 @@ class Individuo:
 
     def __str__(self):
         return str(self.valor)+" "+str(self.genes)
+#

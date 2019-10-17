@@ -1,6 +1,6 @@
 class Conversor:
     TAM_PT_INTEIRA = 4
-    TAM_PT_FRACIONARIA = 7
+    TAM_PT_FRACIONARIA = 9
     NUM_BITS = 1 + TAM_PT_INTEIRA + TAM_PT_FRACIONARIA
 
     def decimal_para_binario(entrada):

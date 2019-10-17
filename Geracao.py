@@ -1,6 +1,7 @@
 from Individuo import Individuo
 import math
 from random import random
+from RepresentacaoNumerica import Conversor
 
 class Geracao:
     TAMANHO = 30
@@ -15,7 +16,7 @@ class Geracao:
         else:
             self.elite = []
             self.selecao(geracao_passada)
-            qnt_cortes = Individuo.NUM_BITS
+            qnt_cortes = Conversor.NUM_BITS
             pai_1 = self.elite[0]
             pai_2 = self.elite[1]
             for pos_corte in range(1, qnt_cortes):
@@ -73,11 +74,14 @@ class Geracao:
         return filho_1, filho_2
 
     def repopular(self):
-        self.individuos += self.elite
         nova_lista_individuos = []
-        for individuo in self.individuos:
-            for i in range(3):
+        #
+        for individuo in self.elite:
+            for i in range(2):
                 nova_lista_individuos.append(individuo.clonar())
+        #
+        for individuo in self.individuos:
+            nova_lista_individuos.append(individuo.clonar())
         self.individuos = nova_lista_individuos
 
     def mutacao(self):
@@ -93,5 +97,3 @@ class Geracao:
             representacao += "\n"
         representacao += "\n"
         return representacao
-
-#
