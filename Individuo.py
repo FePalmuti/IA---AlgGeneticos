@@ -1,34 +1,16 @@
-import math
 from random import randint
 from random import random
+from RepresentacaoNumerica import Conversor
+import math
 
 class Individuo:
     V_MIN = -10
     V_MAX = 10
-    NUM_BITS = 5
 
     def __init__(self):
-        valor = randint(self.V_MIN, self.V_MAX)
-        self.valor = valor
-        self.genes = []
-        if valor > 0:
-            self.genes.append(1)
-        else:
-            self.genes.append(0)
-            valor *= -1
-        self.genes = self.genes + self.converter_decimal_binario(valor)
-        while len(self.genes) < self.NUM_BITS:
-            # Injeta um 0 na posicao 1
-            self.genes.insert(1, 0)
-
-    def converter_decimal_binario(self, decimal):
-        binario = []
-        while decimal != 0 and decimal != 1:
-            bit = decimal % 2
-            binario.insert(0, bit)
-            decimal = decimal // 2
-        binario.insert(0, decimal)
-        return binario
+        int_aleatorio = randint(self.V_MIN * 100, self.V_MAX * 100)
+        self.valor = int_aleatorio / 100
+        self.genes = Conversor.decimal_para_binario(self.valor)
 
     def auto_correcao(self):
         self.atualizar_valor()
@@ -36,19 +18,7 @@ class Individuo:
             self.valor = -math.inf
 
     def atualizar_valor(self):
-        copia_genes = self.genes.copy()
-        if copia_genes.pop(0) == 1:
-            sinal = 1
-        else:
-            sinal = -1
-        indice = len(copia_genes) - 1
-        valor = 0
-        while copia_genes:
-            bit = copia_genes.pop(0)
-            valor += bit * 2 ** indice
-            indice -= 1
-        valor *= sinal
-        self.valor = valor
+        self.valor = Conversor.binario_para_decimal(self.genes.copy())
 
     def sofrer_mutacao(self, taxa):
         for indice in range(len(self.genes)):
@@ -69,4 +39,3 @@ class Individuo:
 
     def __str__(self):
         return str(self.valor)+" "+str(self.genes)
-#

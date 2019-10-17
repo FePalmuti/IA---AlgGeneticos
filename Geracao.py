@@ -50,6 +50,7 @@ class Geracao:
             return -math.inf
         else:
             fx = x**2 -3*x + 4
+            fx = round(fx, 2)
             return fx
 
     def crossover(self, pai_1, pai_2, pos_corte):
