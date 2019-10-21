@@ -1,7 +1,7 @@
 from random import randint
 from random import random
-from RepresentacaoNumerica import Conversor
 import math
+from RepresentacaoNumerica import Conversor
 
 class Individuo:
     V_MIN = -10

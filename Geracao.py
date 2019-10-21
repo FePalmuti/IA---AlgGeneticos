@@ -1,6 +1,7 @@
 from Individuo import Individuo
-import math
+from random import randint
 from random import random
+import math
 from RepresentacaoNumerica import Conversor
 
 class Geracao:
@@ -14,27 +15,27 @@ class Geracao:
             for i in range(self.TAMANHO):
                 self.individuos.append(Individuo())
         else:
-            self.elite = []
             self.selecao(geracao_passada)
+            pai_1, pai_2 = self.escolher_pais()
             qnt_cortes = Conversor.NUM_BITS
-            pai_1 = self.elite[0]
-            pai_2 = self.elite[1]
             for pos_corte in range(1, qnt_cortes):
                 filho_1, filho_2 = self.crossover(pai_1, pai_2, pos_corte)
                 self.individuos.append(filho_1)
                 self.individuos.append(filho_2)
-            self.repopular()
             self.mutacao()
+        self.individuo_superior = self.melhor_individuo(self.individuos)
 
+    # Selecao por torneio
+    # Eh gerada a nova populacao inteira
     def selecao(self, geracao_passada):
         individuos = geracao_passada.individuos
-        tamanho = len(individuos)
-        meio = tamanho // 2
-        grupo1 = individuos[:meio]
-        grupo2 = individuos[meio:]
-        self.elite = []
-        self.elite.append(self.melhor_individuo(grupo1))
-        self.elite.append(self.melhor_individuo(grupo2))
+        self.populacao_intermediaria = []
+        for i in range(0, self.TAMANHO):
+            competidores = []
+            for j in range(2):
+                numero_aleatorio = randint(0, self.TAMANHO - 1)
+                competidores.append(individuos[numero_aleatorio].clonar())
+            self.populacao_intermediaria.append(self.melhor_individuo(competidores))
 
     def melhor_individuo(self, lista):
         melhor_valor = -math.inf
@@ -54,6 +55,13 @@ class Geracao:
             fx = round(fx, 2)
             return fx
 
+    def escolher_pais(self):
+        numero_aleatorio = randint(0, self.TAMANHO - 1)
+        pai_1 = self.populacao_intermediaria[numero_aleatorio].clonar()
+        numero_aleatorio = randint(0, self.TAMANHO - 1)
+        pai_2 = self.populacao_intermediaria[numero_aleatorio].clonar()
+        return pai_1, pai_2
+
     def crossover(self, pai_1, pai_2, pos_corte):
         if random() < self.TAXA_CROSSOVER:
             pt1_pai1 = pai_1.genes[:pos_corte]
@@ -72,17 +80,6 @@ class Geracao:
             filho_1 = pai_1.clonar()
             filho_2 = pai_2.clonar()
         return filho_1, filho_2
-
-    def repopular(self):
-        nova_lista_individuos = []
-        #
-        for individuo in self.elite:
-            for i in range(2):
-                nova_lista_individuos.append(individuo.clonar())
-        #
-        for individuo in self.individuos:
-            nova_lista_individuos.append(individuo.clonar())
-        self.individuos = nova_lista_individuos
 
     def mutacao(self):
         for individuo in self.individuos:
