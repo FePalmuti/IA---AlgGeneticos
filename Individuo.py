@@ -25,6 +25,15 @@ class Individuo:
             if random() < taxa:
                 self.genes[indice] = self.swap(self.genes[indice])
 
+    def calcular_fx(self):
+        x = self.valor
+        if x == -math.inf:
+            return -math.inf
+        else:
+            fx = x**2 -3*x + 4
+            fx = round(fx, 2)
+            return fx
+
     def swap(self, gene):
         if gene == 0:
             return 1
@@ -38,5 +47,10 @@ class Individuo:
         return novo_individuo
 
     def __str__(self):
-        return str(self.valor)+" "+str(self.genes)
+        return str(self.genes)+"\n"+\
+        "x = "+str(self.valor)+"\n"+\
+        "f(x) = "+str(self.calcular_fx())
+
+
+
 #

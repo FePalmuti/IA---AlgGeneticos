@@ -40,19 +40,11 @@ class Geracao:
         melhor_valor = -math.inf
         melhor_individuo = None
         for individuo in lista:
-            fx = self.calcular_fx(individuo.valor)
+            fx = individuo.calcular_fx()
             if fx > melhor_valor:
                 melhor_valor = fx
                 melhor_individuo = individuo
         return melhor_individuo
-
-    def calcular_fx(self, x):
-        if x == -math.inf:
-            return -math.inf
-        else:
-            fx = x**2 -3*x + 4
-            fx = round(fx, 2)
-            return fx
 
     def crossover(self, pai_1, pai_2, pos_corte):
         if random() < self.TAXA_CROSSOVER:
@@ -92,8 +84,7 @@ class Geracao:
     def __str__(self):
         representacao = ""
         for individuo in self.individuos:
-            fx = self.calcular_fx(individuo.valor)
-            representacao += str(individuo)+" "+str(fx)
+            representacao += "x = "+str(individuo.valor)
             representacao += "\n"
         representacao += "\n"
         return representacao
